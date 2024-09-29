@@ -2,8 +2,6 @@
 
 # Amostras do Hyperledger Fabric
 
-[![Status da compilação](https://dev.azure.com/Hyperledger/Fabric-Samples/_apis/build/status/Fabric-Samples?branchName=main)](https://dev.azure.com/Hyperledger/Fabric-Samples/_build/latest?definitionId=28&branchName=main)
-
 Você pode usar amostras do Fabric para começar a trabalhar com o Hyperledger Fabric, explorar recursos importantes do Fabric e aprender a criar aplicativos que podem interagir com redes de blockchain usando os SDKs do Fabric. Para saber mais sobre o Hyperledger Fabric, visite a [documentação do Fabric](https://hyperledger-fabric.readthedocs.io/en/latest).
 
 ## Começando com os exemplos do Fabric
