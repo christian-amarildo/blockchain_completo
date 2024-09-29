@@ -1,17 +1,17 @@
 # Test network - Nano bash
 
-Test network Nano bash provides a set of minimal bash scripts to run a Fabric network on your local machine.
-The network is functionally equivalent to the docker-based Test Network, you can therefore run all the tutorials and samples that target the Test Network with minimal changes.
-The Fabric release binaries are utilized rather than using docker containers to avoid all unnecessary layers. And you can choose between running the chaincode and chaincode builder in a docker container behind the scenes or running the chaincode as a service without any containers at all.
-Using the Fabric binaries also makes it simple for Fabric developers to iteratively and quickly modify Fabric code and test a Fabric network as a user.
+Rede de teste Nano bash fornece um conjunto de scripts bash mínimos para executar uma rede Fabric em sua máquina local.
+A rede é funcionalmente equivalente à Test Network baseada em docker, portanto, você pode executar todos os tutoriais e amostras que visam a Test Network com alterações mínimas.
+Os binários de lançamento do Fabric são utilizados em vez de usar contêineres docker para evitar todas as camadas desnecessárias. E você pode escolher entre executar o chaincode e o construtor do chaincode em um contêiner docker nos bastidores ou executar o chaincode como um serviço sem nenhum contêiner.
+Usar os binários do Fabric também simplifica para os desenvolvedores do Fabric modificar iterativamente e rapidamente o código do Fabric e testar uma rede Fabric como um usuário.
 
-As the name `nano` implies, the scripts provide the smallest minimal setup possible for a Fabric network while still offering a multi-node TLS-enabled network:
-- Minimal set of dependencies
-- Minimal requirements on Fabric version (any v2.x orderer and peer nodes should work)
-- Minimal set of environment variable overrides of the default orderer orderer.yaml and peer core.yaml configurations
-- Minimal scripting with minimal set of reference commands to get a Fabric network up and running
-- Minimal channel configuration for an orderer organization (3 ordering nodes) and two peer organizations (with two peers each)
-- Minimal endorsement policy to allow a single organization to approve and commit a chaincode (unlike Test Network which requires both organizations to endorse)
+Como o nome `nano` indica, os scripts fornecem a menor configuração mínima possível para uma rede Fabric, ao mesmo tempo em que oferecem uma rede habilitada para TLS de vários nós:
+- Conjunto mínimo de dependências
+- Requisitos mínimos na versão Fabric (qualquer v2.x orderer e peer nodes devem funcionar)
+- Conjunto mínimo de substituições de variáveis ​​de ambiente das configurações padrão orderer.yaml e peer core.yaml do orderer
+- Script mínimo com conjunto mínimo de comandos de referência para colocar uma rede Fabric em funcionamento
+- Configuração mínima de canal para uma organização orderer (3 nós ordering) e duas organizações peer (com dois peers cada)
+- Política mínima de endosso para permitir que uma única organização aprove e confirme um chaincode (ao contrário da Test Network, que exige que ambas as organizações endossem)
 
 # Prereqs
 
