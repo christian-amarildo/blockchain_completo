@@ -1,0 +1,55 @@
+<!-- Login Page -->
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+
+<%- include("partials/head") %>
+  <body>
+    
+
+    <!-- Navbar -->
+
+    <%- include("partials/navbar") %>
+
+      <!-- Login Section -->
+
+      <section id="login">
+
+        <div class="container-fluid">
+          <div class="register-form card shadow mx-auto">
+
+            <form action="" method="POST" onsubmit="login()">
+              <div class="row">
+
+                <div class="data-col col-10 order-2 order-lg-1">
+
+                  <h2 class="login-header">Entrar ou registrar</h2>
+
+                  <div class="row login-data">
+                    <div class="row-md-6 row-lg-6 form-group">
+                      <input type="text" name="username" id="username" class="form-control" placeholder="Usuário" required/>
+                    </div>
+                  </div>
+
+                  <div class="row login-data">
+                    <div class="row-md-6 row-lg-6 form-group">
+                      <input type="text" name="org" id="org" class="form-control" placeholder="Organização" value="Org1" required/>
+                    </div>
+                  </div>
+
+                  <div class="login-button mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg login-actual-button">Entrar</button>
+                  </div>
+                </div>
+
+              </div>
+            </form>
+
+          </div>
+        </div>
+
+        <script src="/scripts/auth.js"></script>
+  </body>
+
+</html>

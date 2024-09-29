@@ -1,0 +1,124 @@
+
+body{
+  font-family: 'Poppins', sans-serif;
+
+}
+
+i{
+  margin:0 20px 35px 20px;
+}
+
+/* Login Section */
+
+#login{
+  /* background-color: #ADCF9F; */
+  background-image: url("../images/hero.webp");
+  background-repeat: no-repeat;
+  background-size:cover;
+  padding: 10% 20% 5% 20%;
+  min-height: 100vh;
+}
+
+.register-form{
+  max-width: 32rem;
+  border-radius:30px;
+  padding-left: 40px;
+  padding-right:40px;
+}
+
+.row{
+  justify-content: center;
+}
+
+.form-control
+{
+  max-width: 16rem;
+}
+
+.login-header{
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.data-col{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+}
+
+.login-data{
+  display: flex;
+  align-items:center;
+  margin-bottom: 4%;
+
+}
+
+.login-footer{
+  display: flex;
+  width: 100%;
+  margin-top: 5%;
+  margin-left: 15%;
+}
+
+.login-button{
+  display: flex;
+  justify-content:center;
+  box-shadow:none ;
+  margin-bottom: 40px;
+  margin-top: 40px;
+}
+
+.login-actual-button{
+  color: #ffff !important;
+  background-color: #002945;
+  box-shadow:none ;
+  border-color: #002945
+}
+
+.login-actual-button:hover {
+  color: #002945 !important;
+  background-color: #ffff !important;
+  border-color: #002945 !important;
+  box-shadow:none ;
+}
+
+.login-actual-button:active {
+  color: #002945 !important;
+  background-color: #ffff !important;
+  border-color: #002945 !important;
+  box-shadow:none ;
+}
+
+.login-actual-button:focus {
+  color: #002945 !important;
+  background-color: #ffff !important;
+  border-color: #002945 !important;
+  box-shadow:none ;
+}
+
+.login-actual-button:visited {
+  color: #002945 !important;
+  background-color: #ffff !important;
+  border-color: #002945 !important;
+}
+
+/* .login-actual-button{
+  display: flex;
+  justify-content:center;
+  margin-bottom: 40px;
+  margin-top: 40px;
+} */
+
+.carbon-logo-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5%;
+  width: 50%;
+}
+
+.carbon-logo{
+  border-radius:30px;
+}

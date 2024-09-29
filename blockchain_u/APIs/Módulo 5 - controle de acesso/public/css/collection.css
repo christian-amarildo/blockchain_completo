@@ -1,0 +1,117 @@
+body {
+  font-family: "Poppins", sans-serif;
+  background-image: url("../images/hero.webp");
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
+}
+
+/* Token */
+
+.key-icon {
+  margin: 0 30px 0 20px;
+  color: #7f8487;
+}
+
+.token-card {
+  width: 40%;
+  margin-bottom: 40px;
+}
+
+/* Collection section */
+
+.collection-container {
+  padding: 0 100px;
+}
+
+.collection-header {
+  margin-top: 150px;
+  margin-bottom: 80px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.card {
+  width: 48%;
+  border-radius: 20px;
+  background-color: rgb(209, 208, 208);
+}
+
+.money-icon {
+  margin: 0 20 0 0;
+  color: #002945;
+}
+
+/* Transfer section */
+
+.transfer-header {
+  color: #ffff;
+  margin-top: 120px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.transfer-container {
+  display: flex;
+  justify-content: center;
+}
+
+.transfer-card {
+  width: 40%;
+  border-radius: 20px;
+  background-color: rgb(209, 208, 208);
+}
+
+hr {
+  border: 0;
+  height: 3px;
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 255),
+    rgba(255, 255, 255, 0.75),
+    rgba(255, 255, 255, 255)
+  );
+}
+
+.transfer-data {
+  display: flex;
+  margin-top: 30px;
+}
+
+i {
+  margin: auto 20px auto 0;
+}
+
+label {
+  margin-left: 40px;
+  font-weight: 500;
+}
+
+input {
+  margin: auto;
+  opacity: 0.5;
+}
+
+.transfer-button {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.loading-icon {
+  width: 6%;
+  display: none;
+}
+
+.btn {
+  color: #002945 !important;
+  background-color: transparent !important;
+  border-color: #002945 !important;
+}
+
+.btn:hover {
+  color: #ffff !important;
+  background-color: #002945 !important;
+  border-color: #002945 !important;
+}

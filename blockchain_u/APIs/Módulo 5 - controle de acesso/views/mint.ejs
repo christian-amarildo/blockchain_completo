@@ -1,0 +1,131 @@
+<!-- Mint NFT Page -->
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <%- include("partials/head") %>
+
+  <!-- <body onload="document.getElementById('username').value = localStorage.getItem('username')"> -->
+  <body>
+    <!-- Navbar -->
+
+    <%- include("partials/navbar") %>
+
+    <!-- Mint Section -->
+
+    <section id="mint">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-4 image-container"></div>
+
+          <div class="col-8 form-container">
+            <h1 class="mint-header">Emissão</h1>
+
+            <form
+              action=""
+              class="validated-form"
+              method="POST"
+              onsubmit="mint()"
+            >
+              <div class="flex-fill">
+                <div class="mint-data">
+                  <i class="fas fa-user fa-lg"></i>
+                  <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    class="form-control"
+                    required
+                  />
+                </div>
+                <label class="form-label" for="username">Destinatário</label>
+              </div>
+
+              <hr />
+
+              <div class="flex-fill">
+                <div class="mint-data">
+                  <i class="fas fa-user fa-lg"></i>
+                  <input
+                    type="text"
+                    name="tokenReceiverOrg"
+                    id="tokenReceiverOrg"
+                    class="form-control"
+                    value="Org1"
+                    required
+                  />
+                </div>
+                <label class="form-label" for="tokenReceiverOrg"
+                  >Organização do destinatário</label
+                >
+              </div>
+
+              <hr />
+
+              <div class="flex-fill">
+                <div class="mint-data">
+                  <i class="fas fa-user fa-lg"></i>
+                  <input
+                    type="text"
+                    name="id"
+                    id="id"
+                    class="form-control"
+                    required
+                  />
+                </div>
+                <label class="form-label" for="id">ID do token</label>
+              </div>
+
+              <hr />
+
+              <div class="flex-fill">
+                <div class="mint-data">
+                  <i class="fas fa-coins fa-lg"></i>
+                  <input
+                    type="text"
+                    name="qty"
+                    id="qty"
+                    class="form-control"
+                    required
+                  />
+                </div>
+                <label class="form-label" for="qty">Quantidade</label>
+              </div>
+
+              <hr />
+
+              <!-- <script type="text/javascript">
+                                function buttonPressed() {
+                                // Request
+                                sendRequest("mint");
+                                // Alterna visibilidade de botao e gif de carregamento
+                                document.getElementById("loader").style.display = "flex";
+                                document.getElementById("submitButton").style.display = "none";
+                                }
+                            </script> -->
+
+              <div class="mint-button">
+                <img
+                  id="loader"
+                  class="loading-icon"
+                  src="../images/loader.gif"
+                  height="25%"
+                  width="25%"
+                />
+                <button
+                  id="submitButton"
+                  type="submit"
+                  style="display: flex"
+                  class="btn btn-primary btn-md"
+                >
+                  Emitir
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="/scripts/mint.js"></script>
+  </body>
+</html>

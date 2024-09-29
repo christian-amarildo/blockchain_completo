@@ -1,0 +1,223 @@
+<!-- Mint NFT Page -->
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <%- include("partials/head") %>
+
+  <!-- <body onload="document.getElementById('username').value = localStorage.getItem('username')"> -->
+  <body>
+    <!-- Navbar -->
+
+    <%- include("partials/navbar") %>
+
+    <!-- Mint Section -->
+
+    <section id="mint">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-4 image-container"></div>
+
+          <div class="col-8 form-container">
+            <h1 class="mint-header">Emissão</h1>
+
+            <form
+              action=""
+              class="validated-form"
+              method="POST"
+              onsubmit="mint()"
+            >
+              <div class="flex-fill">
+                <div class="mint-data">
+                  <i class="fas fa-user fa-lg"></i>
+                  <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    class="form-control"
+                    required
+                  />
+                </div>
+                <label class="form-label" for="username">Destinatário</label>
+              </div>
+
+              <hr />
+
+              <div class="flex-fill">
+                <div class="mint-data">
+                  <i class="fas fa-user fa-lg"></i>
+                  <input
+                    type="text"
+                    name="tokenReceiverOrg"
+                    id="tokenReceiverOrg"
+                    class="form-control"
+                    value="POLI"
+                    required
+                  />
+                </div>
+                <label class="form-label" for="tokenReceiverOrg"
+                  >Organização do destinatário</label
+                >
+              </div>
+
+              <hr />
+
+              <div class="container mt-5">
+                <div class="row mx-auto">
+                  <div class="col-4"></div>
+                  <div class="col-2">
+                    <input
+                      type="radio"
+                      id="usp"
+                      name="fav_language"
+                      value="usp"
+                      onchange="uspDisplay()"
+                    />
+                    <label class="radio-label" for="usp">U$P</label><br />
+                  </div>
+                  <div class="col-2">
+                    <input
+                      type="radio"
+                      id="nft"
+                      name="fav_language"
+                      value="nft"
+                      onchange="nftDisplay()"
+                    />
+                      <label class="radio-label" for="nft">NFT</label><br />
+                  </div>
+                  <div class="col-4"></div>
+                </div>
+              </div>
+
+               
+
+              <div class="flex-fill">
+                <div class="mint-data">
+                  <i class="fas fa-coins fa-lg"></i>
+                  <input
+                    type="text"
+                    name="id"
+                    id="id"
+                    class="form-control"
+                    required
+                    disabled
+                  />
+                </div>
+                <label class="form-label" for="id">ID do token</label>
+              </div>
+
+              <div class="flex-fill">
+                <div class="mint-data">
+                  <i class="fas fa-coins fa-lg"></i>
+                  <input
+                    type="text"
+                    name="qty"
+                    id="qty"
+                    class="form-control"
+                    required
+                  />
+                </div>
+                <label class="form-label" for="qty">Quantidade de tokens</label>
+              </div>
+
+              <div id="metadata" hidden>
+                <div class="flex-fill">
+                  <div class="mint-data">
+                    <i class="fas fa-file fa-lg"></i>
+                    <input
+                      type="text"
+                      name="disciplina"
+                      id="disciplina"
+                      class="form-control"
+                      required
+                    />
+                  </div>
+                  <label class="form-label" for="disciplina"
+                    >Sigla da Disciplina</label
+                  >
+                </div>
+
+                <div class="flex-fill">
+                  <div class="mint-data">
+                    <i class="fas fa-file fa-lg"></i>
+                    <input
+                      type="text"
+                      name="atividade"
+                      id="atividade"
+                      class="form-control"
+                      required
+                    />
+                  </div>
+                  <label class="form-label" for="atividade"
+                    >Atividade (e.g. P1, P2...)</label
+                  >
+                </div>
+
+                <div class="flex-fill">
+                  <div class="mint-data">
+                    <i class="fas fa-file fa-lg"></i>
+                    <input
+                      type="text"
+                      name="periodo"
+                      id="periodo"
+                      class="form-control"
+                      required
+                    />
+                  </div>
+                  <label class="form-label" for="periodo"
+                    >Período (e.g. 1o sem/2022)</label
+                  >
+                </div>
+
+                <div class="flex-fill">
+                  <div class="mint-data">
+                    <i class="fas fa-file fa-lg"></i>
+                    <input
+                      type="text"
+                      name="resolucao"
+                      id="resolucao"
+                      class="form-control"
+                      required
+                    />
+                  </div>
+                  <label class="form-label" for="resolucao">Resolução</label>
+                </div>
+              </div>
+
+              <hr />
+
+              <!-- <script type="text/javascript">
+                                function buttonPressed() {
+                                // Request
+                                sendRequest("mint");
+                                // Alterna visibilidade de botao e gif de carregamento
+                                document.getElementById("loader").style.display = "flex";
+                                document.getElementById("submitButton").style.display = "none";
+                                }
+                            </script> -->
+
+              <div class="mint-button">
+                <img
+                  id="loader"
+                  class="loading-icon"
+                  src="../images/loader.gif"
+                  height="25%"
+                  width="25%"
+                />
+                <button
+                  id="submitButton"
+                  type="submit"
+                  style="display: flex"
+                  class="btn btn-primary btn-md"
+                >
+                  Emitir
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="/scripts/mint.js"></script>
+  </body>
+</html>

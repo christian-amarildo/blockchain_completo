@@ -1,0 +1,139 @@
+<!-- Home Page -->
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+  <%- include("partials/head") %>
+
+  <body id ="top">
+    <!-- Intro Section -->
+
+    <section id="intro">
+
+      <!-- Navbar -->
+
+      <%- include("partials/navbar") %>
+
+    <!-- Features section -->
+
+    <section id="features">
+
+      <div class="container-fluid mt-5">
+
+        <h1 class="features-header">Ações</h1>
+
+        <div class="row feature">
+          <div class="col-md-6 feature-img-container">
+            <h3>Inserir Carro na Blockchain</h3>
+          </div>
+          <div class="col-md-6 feature-text-container">
+            <h3>Consultar Carro na Blockchain</h3>
+          </div>
+        </div>
+
+        <div class="row feature">
+
+          <div class="col-md-6 order-2 order-md-1 feature-text-container d-block">
+            <!-- COMEÇO -->
+            <div class="container-fluid">
+              <form action="/createCar" method="POST" class="validated-form" novalidate>
+                <div class="row">                    
+                  <div class="mt-4">
+                      <input type="text" name="id" id="id" class="form-control data w-50 mx-auto" placeholder="ID" required />
+                  </div>
+                  <div class="mt-4">
+                      <input type="text" name="make" id="make" class="form-control data w-50 mx-auto" placeholder="Fabricante" required />
+                  </div>
+                  <div class="mt-4">
+                      <input type="text" name="model" id="model" class="form-control data w-50 mx-auto" placeholder="Modelo" required />
+                  </div>
+                  <div class="mt-4">
+                      <input type="text" name="colour" id="colour" class="form-control data w-50 mx-auto" placeholder="Cor" required />
+                  </div>
+                  <div class="mt-4">
+                      <input type="text" name="owner" id="owner" class="form-control data w-50 mx-auto" placeholder="Dono" required />
+                  </div>
+
+                  <div class="mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Submeter</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <!-- FIM -->
+          </div>
+
+
+          <div class="col-md-6 order-1 order-md-2 feature-img-container d-block">
+            <!-- COMEÇO -->
+            <div class="container-fluid">
+              <form action="/getCar" method="POST" class="validated-form" novalidate>
+
+                <div class="row">                    
+                  <div class="mt-4">
+                      <input type="text" name="id" id="id" class="form-control data w-50 mx-auto" placeholder="ID do Carro" required />
+                  </div>
+
+                  <div class="mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Pesquisar</button>
+                  </div>
+                </div>
+
+                <div class="row" id="result" hidden=true>
+                    <div class="mt-2">
+                      <h3 class="mt-5">Resultado da Pesquisa</h3> 
+                    </div>
+                  <form novalidate>
+                      <div class="row">
+                      <div class="col mt-4">
+                          <label class="form-label" for="makeRes">Fabricante</label>
+                          <input type="text" name="make" id="makeRes" class="form-control data  mx-auto" placeholder="Fabricante" required disabled="disabled"/>
+                      </div>
+                      <div class="col mt-4">
+                          <label class="form-label" for="modelRes">Modelo</label>
+                          <input type="text" name="model" id="modelRes" class="form-control data  mx-auto" placeholder="Modelo" required disabled="disabled"/>
+                      </div>
+                      </div>
+
+                      <div class="row">
+                      <div class="col mt-4">
+                          <label class="form-label" for="colourRes">Cor</label>
+                          <input type="text" name="colour" id="colourRes" class="form-control data  mx-auto" placeholder="Cor" required disabled="disabled"/>
+                      </div>
+                      <div class="col mt-4">
+                          <label class="form-label" for="ownerRes">Dono</label>
+                          <input type="text" name="owner" id="ownerRes" class="form-control data  mx-auto" label="asd" placeholder="Dono" disabled="disabled" required />
+                      </div>
+                      </div>
+                  </form>
+                </div>
+            </div>
+              </form>
+            </div>
+            <!-- FIM -->
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <script>
+      const queryString = window.location.search;
+
+      if (queryString !== "")
+      {
+        result.hidden=false;
+
+        const urlParams = new URLSearchParams(queryString);
+        console.log(urlParams.get('make'))
+        makeRes.value = urlParams.get('make')
+        modelRes.value = urlParams.get('model')
+        colourRes.value = urlParams.get('colour')
+        ownerRes.value = urlParams.get('owner')
+      }
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@hyperledgendary/weftility": "^0.0.1",
+    "fabric-ca-client": "^2.2.20"
+  }
+}

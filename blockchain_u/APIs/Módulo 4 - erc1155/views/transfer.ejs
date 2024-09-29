@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <%- include("partials/head") %>
+
+  <body>
+    <!-- Navbar -->
+
+    <%- include("partials/navbar") %>
+
+    <section id="transfer">
+      
+        <h1 class="transfer-header">Transferência</h1>
+
+        <div class="container-fuid transfer-container">
+        
+        <div class="card shadow-lg">
+          <div class="card-body">
+            <div class="justify-content-between p-md-1">
+              
+              <form action="" method="POST" class="validated-form" onsubmit="transfer()">
+
+                <div class="flex-fill">
+                  <div class="transfer-data">
+                    <i class="fas fa-user fa-lg"></i>
+                    <input type="text" name="usernameDest" id="usernameDest" class="form-control" required/>
+                  </div>
+                  <label class="form-label" for="usernameDest">Destinatário</label>
+                </div>
+
+                <hr />
+
+                <div class="flex-fill">
+                  <div class="transfer-data">
+                    <i class="fas fa-user fa-lg"></i>
+                    <input type="text" name="tokenReceiverOrg" id="tokenReceiverOrg" class="form-control" required/>
+                  </div>
+                  <label class="form-label" for="tokenReceiverOrg">Organização do destinatário</label>
+                </div>
+
+                <hr />
+
+                <div class="flex-fill">
+                  <div class="transfer-data">
+                    <i class="fas fa-coins fa-lg"></i>
+                    <input type="text" name="tokenId" id="tokenId" class="form-control" required />
+                  </div>
+                  <label class="form-label" for="tokenId">ID do token</label>
+                </div>
+
+                <hr />
+
+                <div class="flex-fill">
+                  <div class="transfer-data">
+                    <i class="fas fa-coins fa-lg"></i>
+                    <input type="text" name="qty" id="qty" class="form-control" required />
+                  </div>
+                  <label class="form-label" for="qty">Quantidade</label>
+                </div>
+
+                <div class="transfer-button">
+                    <img id="loader" class="loading-icon" src="../images/loader.gif" height="25%" width="25%"/>
+                    <button id="submitButton" type="submit" class="btn btn-primary btn-md">Transferir</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <script src="/scripts/transfer.js"></script>
+
+  </body>
+
+</html>

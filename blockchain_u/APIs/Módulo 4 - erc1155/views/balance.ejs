@@ -1,0 +1,101 @@
+<!-- Mint NFT Page -->
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <%- include("partials/head") %>
+
+  <!-- <body onload="document.getElementById('username').value = localStorage.getItem('username')"> -->
+  <body>
+    <!-- Navbar -->
+
+    <%- include("partials/navbar") %>
+
+    <!-- Mint Section -->
+
+    <section id="mint">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-4 image-container"></div>
+
+          <div class="col-8 form-container">
+            <h1 class="mint-header">Consultar Saldo</h1>
+
+            <form
+              action=""
+              class="validated-form"
+              method="GET"
+              onsubmit="balance()"
+            >
+              <div class="flex-fill">
+                <div class="mint-data">
+                  <i class="fas fa-user fa-lg"></i>
+                  <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    class="form-control"
+                    required
+                  />
+                </div>
+                <label class="form-label" for="username">Usuário</label>
+              </div>
+
+              <div class="flex-fill">
+                <div class="mint-data">
+                  <i class="fas fa-user fa-lg"></i>
+                  <input
+                    type="text"
+                    name="org"
+                    id="org"
+                    class="form-control"
+                    value="Org1"
+                    required
+                  />
+                </div>
+                <label class="form-label" for="org"
+                  >Organização do usuário</label
+                >
+              </div>
+
+              <div class="flex-fill">
+                <div class="mint-data">
+                  <i class="fas fa-user fa-lg"></i>
+                  <input
+                    type="text"
+                    name="id"
+                    id="id"
+                    class="form-control"
+                    required
+                  />
+                </div>
+                <label class="form-label" for="id">ID do token</label>
+              </div>
+
+              <div class="mint-button">
+                <img
+                  id="loader"
+                  class="loading-icon"
+                  src="../images/loader.gif"
+                  height="25%"
+                  width="25%"
+                />
+                <button
+                  id="submitButton"
+                  type="submit"
+                  style="display: flex"
+                  class="btn btn-primary btn-md"
+                >
+                  Consultar
+                </button>
+              </div>
+
+              <h3 id="balanceHeader" class="mt-5"></h3>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="/scripts/balance.js"></script>
+  </body>
+</html>

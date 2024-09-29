@@ -1,0 +1,46 @@
+#!/bin/bash
+# Inicializa a blockchain Fabric (via microfab) usando a configuração em 'config' e implanta o chaincode (via deploy_chaincode.py).
+set -e  # Interrompe a execução do script se qualquer comando falhar.
+MICROFAB_CFG_PATH=config/config.json  # Caminho para o arquivo de configuração do Microfab.
+DEPLOY_CC_SCRIPT=scripts/deploy_chaincode.py  # Caminho para o script que implanta o chaincode.
+export FABRIC_CFG_PATH=$(pwd)/config  # Define a variável de ambiente FABRIC_CFG_PATH como o caminho atual para a pasta de configuração.
+
+echo "IMPORTANTE: Antes de executar este script, configure $MICROFAB_CFG_PATH e coloque seu chaincode dentro do diretório de chaincode."
+
+echo "Matando qualquer container docker em execução..."
+containers=$(docker ps -q)  # Obtém os IDs de todos os containers em execução.
+if [ ! -z "$containers" ]  # Verifica se há containers em execução.
+then
+  docker kill $containers  # Mata todos os containers encontrados.
+fi
+
+# Limpa redes e volumes não utilizados do Docker.
+docker network prune -f && docker volume prune -f
+sleep 2  # Aguarda 2 segundos.
+
+echo "Iniciando a blockchain usando a configuração em $MICROFAB_CFG_PATH..."
+export MICROFAB_CONFIG=$(cat $MICROFAB_CFG_PATH)  # Lê o conteúdo do arquivo de configuração e exporta como variável de ambiente.
+# Executa um container Docker com o Microfab, usando a configuração especificada.
+docker run -d --name microfab --rm -p 8080:8080 -e MICROFAB_CONFIG ibmcom/ibp-microfab
+sleep 4  # Aguarda 4 segundos para garantir que o Microfab esteja em execução.
+
+echo "Criando diretórios de carteira, gateways e msp..."
+# A linha abaixo está comentada. Ela faz uma chamada à API do console do Microfab para criar os componentes necessários.
+# curl -s http://console.127-0-0-1.nip.io:8080/ak/api/v1/components | weft microfab -w ./wallets -p ./gateways -m ./msp -f
+# IMPORTANTE: descomente se você não tiver instalado weftility globalmente.
+npm install @hyperledgendary/weftility  # Instala o pacote weftility localmente via npm.
+# Faz uma chamada à API do console do Microfab para criar as carteiras, gateways e diretórios de MSP.
+curl -s http://console.127-0-0-1.nip.io:8080/ak/api/v1/components | npx weft microfab -w ./wallets -p ./gateways -m ./msp -f
+
+# Implantação do chaincode
+python3 $DEPLOY_CC_SCRIPT || exit 1  # Executa o script de implantação do chaincode. Se falhar, o script é encerrado.
+
+# Exibe mensagem de sucesso na inicialização da blockchain.
+echo -e
+echo -e "\033[0;32mBlockchain em execução!\033[0m"
+echo -e
+
+# A linha abaixo está comentada. Ela iniciaria a API em um diretório específico.
+# echo "Iniciando API..."
+# cd api
+# nodemon

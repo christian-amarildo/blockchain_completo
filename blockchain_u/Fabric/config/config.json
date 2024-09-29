@@ -1,0 +1,18 @@
+{
+    "endorsing_organizations": [
+      {
+        "name": "Org1"
+      }
+    ],
+    "ordering_organizations": [
+      {
+        "name": "Orderer"
+      }
+    ],
+    "channels": [
+      {
+        "name": "channel1",
+        "endorsing_organizations": ["Org1"]
+      }
+    ]
+  }

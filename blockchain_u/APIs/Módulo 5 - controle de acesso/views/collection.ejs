@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <script src="/scripts/collection.js"></script>
+  <%- include("partials/head") %>
+
+  <body>
+    <!-- Navbar -->
+
+    <%- include("partials/navbar") %>
+
+    <section id="transfer">
+      <h1 class="transfer-header">Consulta de coleção</h1>
+
+      <div class="container-fuid transfer-container">
+        <div class="transfer-card shadow-lg px-4 pb-4">
+          <div class="card-body">
+            <div class="p-md-1">
+              <form
+                action=""
+                method="GET"
+                class="validated-form"
+                onsubmit="collection()"
+              >
+                <div class="flex-fill">
+                  <div class="transfer-data">
+                    <i class="fas fa-user fa-lg"></i>
+                    <input
+                      type="text"
+                      name="tokenOwner"
+                      id="tokenOwner"
+                      class="form-control"
+                      required
+                    />
+                  </div>
+                  <label class="form-label" for="tokenOwner">Usuário</label>
+                </div>
+
+                <hr />
+
+                <div class="flex-fill">
+                  <div class="transfer-data">
+                    <i class="fas fa-user fa-lg"></i>
+                    <input
+                      type="text"
+                      name="tokenOwnerOrg"
+                      id="tokenOwnerOrg"
+                      class="form-control"
+                      value="Org1"
+                      required
+                    />
+                  </div>
+                  <label class="form-label" for="tokenOwnerOrg"
+                    >Organização do usuário</label
+                  >
+                </div>
+
+                <div class="transfer-button">
+                  <img
+                    id="loader"
+                    class="loading-icon"
+                    src="../images/loader.gif"
+                    height="25%"
+                    width="25%"
+                  />
+                  <button
+                    id="submitButton"
+                    type="submit"
+                    class="btn btn-primary btn-md"
+                  >
+                    Consultar
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-fuid collection-container">
+        <div id="nft-showroom"></div>
+        <!-- <img id="loader" class="loading-icon mt-5" src="../images/loader.gif" style="display:flex; margin: auto;"/> -->
+      </div>
+    </section>
+  </body>
+</html>
