@@ -1,70 +1,64 @@
 [//]: # (SPDX-License-Identifier: CC-BY-4.0)
 
-# Hyperledger Fabric Samples
+# Amostras do Hyperledger Fabric
 
-[![Build Status](https://dev.azure.com/Hyperledger/Fabric-Samples/_apis/build/status/Fabric-Samples?branchName=main)](https://dev.azure.com/Hyperledger/Fabric-Samples/_build/latest?definitionId=28&branchName=main)
+Você pode usar amostras do Fabric para começar a trabalhar com o Hyperledger Fabric, explorar recursos importantes do Fabric e aprender a criar aplicativos que podem interagir com redes de blockchain usando os SDKs do Fabric. Para saber mais sobre o Hyperledger Fabric, visite a [documentação do Fabric](https://hyperledger-fabric.readthedocs.io/en/latest).
 
-You can use Fabric samples to get started working with Hyperledger Fabric, explore important Fabric features, and learn how to build applications that can interact with blockchain networks using the Fabric SDKs. To learn more about Hyperledger Fabric, visit the [Fabric documentation](https://hyperledger-fabric.readthedocs.io/en/latest).
+## Começando com os exemplos do Fabric
 
-## Getting started with the Fabric samples
+Para usar os exemplos do Fabric, você precisa baixar as imagens do Docker do Fabric e as ferramentas do Fabric CLI. Primeiro, certifique-se de ter instalado todos os [pré-requisitos do Fabric](https://hyperledger-fabric.readthedocs.io/en/latest/prereqs.html). Você pode seguir as instruções para [Instalar os exemplos do Fabric, binários e imagens do Docker](https://hyperledger-fabric.readthedocs.io/en/latest/install.html) na documentação do Fabric. Além de baixar as imagens do Fabric e os binários das ferramentas, os exemplos do Fabric também serão clonados para sua máquina local.
 
-To use the Fabric samples, you need to download the Fabric Docker images and the Fabric CLI tools. First, make sure that you have installed all of the [Fabric prerequisites](https://hyperledger-fabric.readthedocs.io/en/latest/prereqs.html). You can then follow the instructions to [Install the Fabric Samples, Binaries, and Docker Images](https://hyperledger-fabric.readthedocs.io/en/latest/install.html) in the Fabric documentation. In addition to downloading the Fabric images and tool binaries, the Fabric samples will also be cloned to your local machine.
+## Rede de teste
 
-## Test network
+A [rede de teste do Fabric](test-network) no repositório de exemplos fornece uma rede de teste baseada no Docker Compose com dois
+Peers da organização e um nó de serviço de pedidos. Você pode usá-lo em sua máquina local para executar os exemplos listados abaixo.
+Você também pode usá-lo para implantar e testar seus próprios chaincodes e aplicativos do Fabric. Para começar, veja
+o [tutorial de rede de teste](https://hyperledger-fabric.readthedocs.io/en/latest/test_network.html).
 
-The [Fabric test network](test-network) in the samples repository provides a Docker Compose based test network with two
-Organization peers and an ordering service node. You can use it on your local machine to run the samples listed below.
-You can also use it to deploy and test your own Fabric chaincodes and applications. To get started, see
-the [test network tutorial](https://hyperledger-fabric.readthedocs.io/en/latest/test_network.html).
+O exemplo [Rede de teste do Kubernetes](test-network-k8s) se baseia na rede Compose, construindo uma rede Fabric
+com nós de infraestrutura peer, orderer e CA em execução no Kubernetes. Além de fornecer um exemplo
+de guia do Kubernetes, a rede de teste do Kube pode ser usada como uma plataforma para criar e depurar aplicativos Fabric Client _prontos para a nuvem_
+em uma estação de trabalho de desenvolvimento ou CI.
 
-The [Kubernetes Test Network](test-network-k8s) sample builds upon the Compose network, constructing a Fabric
-network with peer, orderer, and CA infrastructure nodes running on Kubernetes.  In addition to providing a sample
-Kubernetes guide, the Kube test network can be used as a platform to author and debug _cloud ready_ Fabric Client
-applications on a development or CI workstation.
+## Exemplos e tutoriais de transferência de ativos
 
+A série de transferência de ativos fornece uma série de exemplos de contratos inteligentes e aplicativos para demonstrar como armazenar e transferir ativos usando o Hyperledger Fabric.
+Cada exemplo e tutorial associado na série demonstra uma capacidade principal diferente no Hyperledger Fabric. O exemplo **Básico** fornece uma introdução sobre como
+escrever contratos inteligentes e como interagir com uma rede Fabric usando os Fabric SDKs. Os exemplos de **Consultas do Ledger**, **Dados privados** e **Endosso baseado em estado**
+demonstram esses recursos adicionais. Por fim, o exemplo de **Acordo garantido** demonstra como reunir todos os recursos para transferir
+um ativo com segurança em um cenário de transferência mais realista.
 
-
-## Asset transfer samples and tutorials
-
-The asset transfer series provides a series of sample smart contracts and applications to demonstrate how to store and transfer assets using Hyperledger Fabric.
-Each sample and associated tutorial in the series demonstrates a different core capability in Hyperledger Fabric. The **Basic** sample provides an introduction on how
-to write smart contracts and how to interact with a Fabric network using the Fabric SDKs. The **Ledger queries**, **Private data**, and **State-based endorsement**
-samples demonstrate these additional capabilities. Finally, the **Secured agreement** sample demonstrates how to bring all the capabilities together to securely
-transfer an asset in a more realistic transfer scenario.
-
-|  **Smart Contract** | **Description** | **Tutorial** | **Smart contract languages** | **Application languages** |
+| **Contrato inteligente** | **Descrição** | **Tutorial** | **Linguagens de contrato inteligente** | **Linguagens de aplicativo** |
 | -----------|------------------------------|----------|---------|---------|
-| [Basic](asset-transfer-basic) | The Basic sample smart contract that allows you to create and transfer an asset by putting data on the ledger and retrieving it. This sample is recommended for new Fabric users. | [Writing your first application](https://hyperledger-fabric.readthedocs.io/en/latest/write_first_app.html) | Go, JavaScript, TypeScript, Java | Go, JavaScript, TypeScript, Java |
-| [Ledger queries](asset-transfer-ledger-queries) | The ledger queries sample demonstrates range queries and transaction updates using range queries (applicable for both LevelDB and CouchDB state databases), and how to deploy an index with your chaincode to support JSON queries (applicable for CouchDB state database only). | [Using CouchDB](https://hyperledger-fabric.readthedocs.io/en/latest/couchdb_tutorial.html) | Go, JavaScript | Java, JavaScript |
-| [Private data](asset-transfer-private-data) | This sample demonstrates the use of private data collections, how to manage private data collections with the chaincode lifecycle, and how the private data hash can be used to verify private data on the ledger. It also demonstrates how to control asset updates and transfers using client-based ownership and access control. | [Using Private Data](https://hyperledger-fabric.readthedocs.io/en/latest/private_data_tutorial.html) | Go, Java | JavaScript |
-| [State-Based Endorsement](asset-transfer-sbe) | This sample demonstrates how to override the chaincode-level endorsement policy to set endorsement policies at the key-level (data/asset level). | [Using State-based endorsement](https://github.com/hyperledger/fabric-samples/tree/main/asset-transfer-sbe) | Java, TypeScript | JavaScript |
-| [Secured agreement](asset-transfer-secured-agreement) | Smart contract that uses implicit private data collections, state-based endorsement, and organization-based ownership and access control to keep data private and securely transfer an asset with the consent of both the current owner and buyer. | [Secured asset transfer](https://hyperledger-fabric.readthedocs.io/en/latest/secured_asset_transfer/secured_private_asset_transfer_tutorial.html)  | Go | JavaScript |
-| [Events](asset-transfer-events) | The events sample demonstrates how smart contracts can emit events that are read by the applications interacting with the network. | [README](asset-transfer-events/README.md)  | JavaScript, Java | JavaScript |
-| [Attribute-based access control](asset-transfer-abac) | Demonstrates the use of attribute and identity based access control using a simple asset transfer scenario | [README](asset-transfer-abac/README.md)  | Go | None |
+| [Básico](asset-transfer-basic) | O exemplo básico de contrato inteligente que permite criar e transferir um ativo colocando dados no livro-razão e recuperando-os. Este exemplo é recomendado para novos usuários do Fabric. | [Escrevendo seu primeiro aplicativo](https://hyperledger-fabric.readthedocs.io/en/latest/write_first_app.html) | Go, JavaScript, TypeScript, Java | Go, JavaScript, TypeScript, Java |
+| [Consultas de razão](asset-transfer-ledger-queries) | O exemplo de consultas de razão demonstra consultas de intervalo e atualizações de transações usando consultas de intervalo (aplicável para bancos de dados de estado LevelDB e CouchDB) e como implantar um índice com seu chaincode para dar suporte a consultas JSON (aplicável somente para banco de dados de estado CouchDB). | [Usando CouchDB](https://hyperledger-fabric.readthedocs.io/en/latest/couchdb_tutorial.html) | Go, JavaScript | Java, JavaScript |
+| [Dados privados](asset-transfer-private-data) | Este exemplo demonstra o uso de coleções de dados privadas, como gerenciar coleções de dados privadas com o ciclo de vida do chaincode e como o hash de dados privados pode ser usado para verificar dados privados no razão. Ele também demonstra como controlar atualizações e transferências de ativos usando propriedade baseada em cliente e controle de acesso. | [Usando dados privados](https://hyperledger-fabric.readthedocs.io/en/latest/private_data_tutorial.html) | Go, Java | JavaScript |
+| [Endosso baseado em estado](asset-transfer-sbe) | Este exemplo demonstra como substituir a política de endosso em nível de chaincode para definir políticas de endosso em nível de chave (nível de dados/ativo). | [Usando endosso baseado em estado](https://github.com/hyperledger/fabric-samples/tree/main/asset-transfer-sbe) | Java, TypeScript | JavaScript |
+| [Acordo seguro](asset-transfer-secured-agreement) | Contrato inteligente que usa coleções de dados privados implícitos, endosso baseado em estado e propriedade e controle de acesso baseados em organização para manter os dados privados e transferir um ativo com segurança com o consentimento de ambos os proprietário e comprador do aluguel. | [Transferência de ativos segura](https://hyperledger-fabric.readthedocs.io/en/latest/secured_asset_transfer/secured_private_asset_transfer_tutorial.html) | Ir | JavaScript |
+| [Eventos](asset-transfer-events) | O exemplo de eventos demonstra como os contratos inteligentes podem emitir eventos que são lidos pelos aplicativos que interagem com a rede. | [README](asset-transfer-events/README.md) | JavaScript, Java | JavaScript |
+| [Controle de acesso baseado em atributos](asset-transfer-abac) | Demonstra o uso de controle de acesso baseado em atributos e identidades usando um cenário simples de transferência de ativos | [README](asset-transfer-abac/README.md) | Ir | Nenhum |
 
+## Exemplos adicionais
 
+Os exemplos adicionais demonstram vários casos de uso e padrões de aplicativos do Fabric.
 
-## Additional samples
-
-Additional samples demonstrate various Fabric use cases and application patterns.
-
-|  **Sample** | **Description** | **Documentation** |
+| **Amostra** | **Descrição** | **Documentação** |
 | -------------|------------------------------|------------------|
-| [Off chain data](off_chain_data) | Learn how to use block events to build an off-chain database for reporting and analytics. | [Peer channel-based event services](https://hyperledger-fabric.readthedocs.io/en/latest/peer_event_services.html) |
-| [Token ERC-20](token-erc-20) | Smart contract demonstrating how to create and transfer fungible tokens using an account-based model. | [README](token-erc-20/README.md) |
-| [Token UTXO](token-utxo) | Smart contract demonstrating how to create and transfer fungible tokens using a UTXO (unspent transaction output) model. | [README](token-utxo/README.md) |
-| [Token ERC-1155](token-erc-1155) | Smart contract demonstrating how to create and transfer multiple tokens (both fungible and non-fungible) using an account based model. | [README](token-erc-1155/README.md) |
-| [Token ERC-721](token-erc-721) | Smart contract demonstrating how to create and transfer non-fungible tokens using an account-based model. | [README](token-erc-721/README.md) |
-| [High throughput](high-throughput) | Learn how you can design your smart contract to avoid transaction collisions in high volume environments. | [README](high-throughput/README.md) |
-| [Simple Auction](auction-simple) | Run an auction where bids are kept private until the auction is closed, after which users can reveal their bid. | [README](auction-simple/README.md) |
-| [Dutch Auction](auction-dutch) | Run an auction in which multiple items of the same type can be sold to more than one buyer. This example also includes the ability to add an auditor organization. | [README](auction-dutch/README.md) |
-| [Chaincode](chaincode) | A set of other sample smart contracts, many of which were used in tutorials prior to the asset transfer sample series. | |
-| [Interest rate swaps](interest_rate_swaps) | **Deprecated in favor of state based endorsement asset transfer sample** | |
-| [Fabcar](fabcar) | **Deprecated in favor of basic asset transfer sample** |  |
+| [Dados off-chain](off_chain_data) | Aprenda a usar eventos de bloco para criar um banco de dados off-chain para relatórios e análises. | [Serviços de eventos baseados em canais peer](https://hyperledger-fabric.readthedocs.io/en/latest/peer_event_services.html) |
+| [Token ERC-20](token-erc-20) | Contrato inteligente demonstrando como criar e transferir tokens fungíveis usando um modelo baseado em conta. | [README](token-erc-20/README.md) |
+| [Token UTXO](token-utxo) | Contrato inteligente demonstrando como criar e transferir tokens fungíveis usando um modelo UTXO (saída de transação não gasta). | [README](token-utxo/README.md) |
+| [Token ERC-1155](token-erc-1155) | Contrato inteligente demonstrando como criar e transferir vários tokens (fungíveis e não fungíveis) usando um modelo baseado em conta. | [README](token-erc-1155/README.md) |
+| [Token ERC-721](token-erc-721) | Contrato inteligente demonstrando como criar e transferir tokens não fungíveis usando um modelo baseado em conta. | [README](token-erc-721/README.md) |
+| [Alto rendimento](high-throughput) | Aprenda como você pode projetar seu contrato inteligente para evitar colisões de transações em ambientes de alto volume. | [README](high-throughput/README.md) |
+| [Leilão simples](auction-simple) | Execute um leilão em que os lances sejam mantidos privados até o leilão ser encerrado, após o qual os usuários podem revelar seus lances. | [README](auction-simple/README.md) |
+| [Leilão holandês](auction-dutch) | Execute um leilão no qual vários itens do mesmo tipo podem ser vendidos para mais de um comprador. Este exemplo também inclui a capacidade de adicionar uma organização de auditoria. | [README](auction-dutch/README.md) |
+| [Chaincode](chaincode) | Um conjunto de outros contratos inteligentes de amostra, muitos dos quais foram usados ​​em tutoriais antes da série de amostra de transferência de ativos. | |
+| [Swaps de taxa de juros](interest_rate_swaps) | **Descontinuado em favor da amostra de transferência de ativos de endosso baseada em estado** | |
+| [Fabcar](fabcar) | **Descontinuado em favor da amostra básica de transferência de ativos** | |
 
-## License <a name="license"></a>
+## Licença <a name="license"></a>
 
-Hyperledger Project source code files are made available under the Apache
-License, Version 2.0 (Apache-2.0), located in the [LICENSE](LICENSE) file.
-Hyperledger Project documentation files are made available under the Creative
-Commons Attribution 4.0 International License (CC-BY-4.0), available at http://creativecommons.org/licenses/by/4.0/.
+Os arquivos de código-fonte do Hyperledger Project são disponibilizados sob a Apache
+License, Versão 2.0 (Apache-2.0), localizada no arquivo [LICENSE](LICENSE).
+Os arquivos de documentação do Hyperledger Project são disponibilizados sob a Creative
+Commons Attribution 4.0 International License (CC-BY-4.0), disponível em http://creativecommons.org/licenses/by/4.0/.

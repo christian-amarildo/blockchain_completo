@@ -1,93 +1,93 @@
 # Test network - Nano bash
 
-Test network Nano bash provides a set of minimal bash scripts to run a Fabric network on your local machine.
-The network is functionally equivalent to the docker-based Test Network, you can therefore run all the tutorials and samples that target the Test Network with minimal changes.
-The Fabric release binaries are utilized rather than using docker containers to avoid all unnecessary layers. And you can choose between running the chaincode and chaincode builder in a docker container behind the scenes or running the chaincode as a service without any containers at all.
-Using the Fabric binaries also makes it simple for Fabric developers to iteratively and quickly modify Fabric code and test a Fabric network as a user.
+Rede de teste Nano bash fornece um conjunto de scripts bash mínimos para executar uma rede Fabric em sua máquina local.
+A rede é funcionalmente equivalente à Test Network baseada em docker, portanto, você pode executar todos os tutoriais e amostras que visam a Test Network com alterações mínimas.
+Os binários de lançamento do Fabric são utilizados em vez de usar contêineres docker para evitar todas as camadas desnecessárias. E você pode escolher entre executar o chaincode e o construtor do chaincode em um contêiner docker nos bastidores ou executar o chaincode como um serviço sem nenhum contêiner.
+Usar os binários do Fabric também simplifica para os desenvolvedores do Fabric modificar iterativamente e rapidamente o código do Fabric e testar uma rede Fabric como um usuário.
 
-As the name `nano` implies, the scripts provide the smallest minimal setup possible for a Fabric network while still offering a multi-node TLS-enabled network:
-- Minimal set of dependencies
-- Minimal requirements on Fabric version (any v2.x orderer and peer nodes should work)
-- Minimal set of environment variable overrides of the default orderer orderer.yaml and peer core.yaml configurations
-- Minimal scripting with minimal set of reference commands to get a Fabric network up and running
-- Minimal channel configuration for an orderer organization (3 ordering nodes) and two peer organizations (with two peers each)
-- Minimal endorsement policy to allow a single organization to approve and commit a chaincode (unlike Test Network which requires both organizations to endorse)
+Como o nome `nano` indica, os scripts fornecem a menor configuração mínima possível para uma rede Fabric, ao mesmo tempo em que oferecem uma rede habilitada para TLS de vários nós:
+- Conjunto mínimo de dependências
+- Requisitos mínimos na versão Fabric (qualquer v2.x orderer e peer nodes devem funcionar)
+- Conjunto mínimo de substituições de variáveis ​​de ambiente das configurações padrão orderer.yaml e peer core.yaml do orderer
+- Script mínimo com conjunto mínimo de comandos de referência para colocar uma rede Fabric em funcionamento
+- Configuração mínima de canal para uma organização orderer (3 nós ordering) e duas organizações peer (com dois peers cada)
+- Política mínima de endosso para permitir que uma única organização aprove e confirme um chaincode (ao contrário da Test Network, que exige que ambas as organizações endossem)
 
-# Prereqs
+# Pré-requisitos
 
-- Follow the Fabric documentation for the [Prereqs](https://hyperledger-fabric.readthedocs.io/en/latest/prereqs.html)
-- Follow the Fabric documentation for [downloading the Fabric samples and binaries](https://hyperledger-fabric.readthedocs.io/en/latest/install.html). You can skip the docker image downloads by using `./install-fabric.sh binary samples`
+- Siga a documentação do Fabric para os [Pré-requisitos](https://hyperledger-fabric.readthedocs.io/en/latest/prereqs.html)
+- Siga a documentação do Fabric para [baixar os exemplos e binários do Fabric](https://hyperledger-fabric.readthedocs.io/en/latest/install.html). Você pode pular os downloads de imagem do docker usando `./install-fabric.sh binary samples`
 
-## To run the chaincode as a service
-You need to configure the peer to use the `ccaas` external builder downloaded with the binaries above.
-The path specified in the default config file is only valid within the peer container which you won't be using.
-Edit the `fabric-samples/config/core.yaml` file and modify the `externalBuilders` field to point to the correct path.
-The configuration should look something like the following:
+## Para executar o chaincode como um serviço
+Você precisa configurar o peer para usar o construtor externo `ccaas` baixado com os binários acima.
+O caminho especificado no arquivo de configuração padrão é válido apenas dentro do contêiner do peer que você não usará.
+Edite o arquivo `fabric-samples/config/core.yaml` e modifique o campo `externalBuilders` para apontar para o caminho correto.
+A configuração deve ser parecida com a seguinte:
 
 ```yaml
 externalBuilders:
-  - name: ccaas_builder
-    path: /Users/nanofab/fabric-samples/builders/ccaas
-    propagateEnvironment:
-      - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG
+- name: ccaas_builder
+path: /Users/nanofab/fabric-samples/builders/ccaas
+propagateEnvironment:
+- CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG
 ```
 
-If you have [yq](https://mikefarah.gitbook.io/yq/) installed, run the following command in the `fabric-samples` directory to update the configuration:
+Se você tiver [yq](https://mikefarah.gitbook.io/yq/) instalado, execute o seguinte comando no diretório `fabric-samples` para atualizar a configuração:
 
 ```shell
 yq -i 'del(.chaincode.externalBuilders) | .chaincode.externalBuilders[0].name = "ccaas_builder" | .chaincode.externalBuilders[0].path = env(PWD) + "/builders/ccaas" | .chaincode.externalBuilders[0].propagateEnvironment[0] = "CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG"' config/core.yaml
 ```
 
-# Instructions for starting network
+# Instruções para iniciar a rede
 
-## Running each component separately
+## Executando cada componente separadamente
 
-Open terminal windows for 3 ordering nodes, 4 peer nodes, and 4 peer admins as seen in the following terminal setup. The first two peers and peer admins belong to Org1, the latter two peer and peer admins belong to Org2.
-Note, you can start with two ordering nodes and a single Org1 peer node and single Org1 peer admin terminal if you would like to keep things even more minimal (two ordering nodes are required to achieve consensus (2 of 3), while a single peer from Org1 can be utilized since the endorsement policy is set as any single organization).
-![Terminal setup](terminal_setup.png)
+Abra janelas de terminal para 3 nós de ordenação, 4 nós de peer e 4 administradores de peer, conforme visto na configuração de terminal a seguir. Os dois primeiros peers e administradores de peer pertencem à Org1, os dois últimos peer e administradores de peer pertencem à Org2.
+Observe que você pode começar com dois nós de ordenação e um único nó de peer da Org1 e um único terminal de administração de peer da Org1 se quiser manter as coisas ainda mais minimalistas (dois nós de ordenação são necessários para atingir o consenso (2 de 3), enquanto um único peer da Org1 pode ser utilizado, pois a política de endosso é definida como qualquer organização única).
+![Configuração do terminal](terminal_setup.png)
 
-The following instructions will have you run simple bash scripts that set environment variable overrides for a component and then runs the component.
-The scripts contain only simple single-line commands so that they are easy to read and understand.
-If you have trouble running bash scripts in your environment, you can just as easily copy and paste the individual commands from the script files instead of running the script files.
+As instruções a seguir farão com que você execute scripts bash simples que definem substituições de variáveis ​​de ambiente para um componente e, em seguida, executam o componente.
+Os scripts contêm apenas comandos simples de linha única para que sejam fáceis de ler e entender.
+Se você tiver problemas para executar scripts bash em seu ambiente, você pode facilmente copiar e colar os comandos individuais dos arquivos de script em vez de executar os arquivos de script.
 
-- cd to the `test-network-nano-bash` directory in each terminal window
-- In the first orderer terminal, run `./generate_artifacts.sh` to generate crypto material (calls cryptogen) and system and application channel genesis block and configuration transactions (calls configtxgen). The artifacts will be created in the `crypto-config` and `channel-artifacts` directories.
-- In the three orderer terminals, run `./orderer1.sh`, `./orderer2.sh`, `./orderer3.sh` respectively
-- In the four peer terminals, run `./peer1.sh`, `./peer2.sh`, `./peer3.sh`, `./peer4.sh` respectively
-- Note that each orderer and peer write their data (including their ledgers) to their own subdirectory under the `data` directory
-- In the four peer admin terminals, run `source peer1admin.sh && ./create_channel.sh`, `source peer2admin.sh && ./join_channel.sh`, `source peer3admin.sh && ./join_channel.sh`, `source peer4admin.sh && ./join_channel.sh` respectively
+- cd para o diretório `test-network-nano-bash` em cada janela do terminal
+- No primeiro terminal do ordenador, execute `./generate_artifacts.sh` para gerar material criptográfico (chama cryptogen) e bloco de gênese de canal de sistema e aplicativo e transações de configuração (chama configtxgen). Os artefatos serão criados nos diretórios `crypto-config` e `channel-artifacts`.
+- Nos três terminais do ordenador, execute `./orderer1.sh`, `./orderer2.sh`, `./orderer3.sh` respectivamente
+- Nos quatro terminais do peer, execute `./peer1.sh`, `./peer2.sh`, `./peer3.sh`, `./peer4.sh` respectivamente
+- Observe que cada ordenador e peer grava seus dados (incluindo seus livros-razão) em seu próprio subdiretório sob o diretório `data`
+- Nos quatro terminais do administrador do peer, execute `source peer1admin.sh && ./create_channel.sh`, `source peer2admin.sh && ./join_channel.sh`, `source peer3admin.sh && ./join_channel.sh`, `source peer4admin.sh && ./join_channel.sh` respectivamente
 
-Note the syntax of running the scripts. The peer admin scripts set the admin environment variables and must be run with the `source` command in order that the exported environment variables can be utilized by any subsequent user commands.
+Observe a sintaxe de execução dos scripts. Os scripts de administração de pares definem as variáveis ​​de ambiente de administração e devem ser executados com o comando `source` para que as variáveis ​​de ambiente exportadas possam ser utilizadas por quaisquer comandos de usuário subsequentes.
 
-The `create_channel.sh` script creates the application channel `mychannel`, updates the channel configuration for the gossip anchor peer, and joins the peer to `mychannel`.
-The `join_channel.sh` script joins a peer to `mychannel`.
+O script `create_channel.sh` cria o canal de aplicativo `mychannel`, atualiza a configuração do canal para o par de âncora de fofoca e une o par a `mychannel`.
+O script `join_channel.sh` une um par a `mychannel`.
 
-## Starting the network with one command
+## Iniciando a rede com um comando
 
-Using the individual scripts above gives you more control of the process of starting a Fabric network and demonstrates how all the required components fit together, however the same network can also be started using a single script for convenience.
+Usar os scripts individuais acima dá a você mais controle do processo de iniciar uma rede Fabric e demonstra como todos os componentes necessários se encaixam, no entanto, a mesma rede também pode ser iniciada usando um único script para conveniência.
 
 ```shell
 ./network.sh start
 ```
 
-After the network has started, use seperate terminals to run peer commands.
-You will need to configure the peer environment for each new terminal.
-For example to run against peer1, use:
+Após a rede ter iniciado, use terminais separados para executar comandos de pares.
+Você precisará configurar o ambiente de pares para cada novo terminal.
+Por exemplo, para executar contra peer1, use:
 
 ```shell
 source peer1admin.sh
 ```
 
-# Instructions for deploying and running the basic asset transfer sample chaincode
+# Instruções para implantar e executar o chaincode de amostra de transferência básica de ativos
 
-To deploy and invoke the chaincode, utilize the peer1 admin terminal that you have created in the prior steps. You have two possibilities:
+Para implantar e invocar o chaincode, utilize o terminal de administração peer1 que você criou nas etapas anteriores. Você tem duas possibilidades:
 
-1. Using a chaincode container
-2. Running the chaincode as a service
+1. Usar um contêiner chaincode
+2. Executar o chaincode como um serviço
 
-## 1. Using a chaincode container
+## 1. Usar um contêiner chaincode
 
-Package and install the chaincode on peer1:
+Empacote e instale o chaincode no peer1:
 
 ```shell
 peer lifecycle chaincode package basic.tar.gz --path ../asset-transfer-basic/chaincode-go --lang golang --label basic_1
@@ -95,15 +95,15 @@ peer lifecycle chaincode package basic.tar.gz --path ../asset-transfer-basic/cha
 peer lifecycle chaincode install basic.tar.gz
 ```
 
-The chaincode install may take a minute since the `fabric-ccenv` chaincode builder docker image will be downloaded if not already available on your machine. Copy the returned chaincode package ID into an environment variable for use in subsequent commands (your ID may be different):
+A instalação do chaincode pode levar um minuto, pois a imagem docker do construtor chaincode `fabric-ccenv` será baixada se ainda não estiver disponível em sua máquina. Copie o ID do pacote chaincode retornado em uma variável de ambiente para uso em comandos subsequentes (seu ID pode ser diferente):
 
 ```shell
 export CHAINCODE_ID=basic_1:faaa38f2fc913c8344986a7d1617d21f6c97bc8d85ee0a489c90020cd57af4a5
 ```
 
-## 2. Running the chaincode as a service
+## 2. Executando o chaincode como um serviço
 
-Package and install the external chaincode on peer1 with the following simple commands:
+Empacote e instale o chaincode externo no peer1 com os seguintes comandos simples:
 
 ```shell
 cd chaincode-external
@@ -116,40 +116,40 @@ cd ..
 peer lifecycle chaincode install chaincode-external/external-chaincode.tgz
 ```
 
-Copy the returned chaincode package ID into an environment variable for use in subsequent commands (your ID may be different):
+Copie o ID do pacote chaincode retornado em um ambiente variável para uso em comandos subsequentes (seu ID pode ser diferente):
 
 ```shell
 export CHAINCODE_ID=$(peer lifecycle chaincode calculatepackageid chaincode-external/external-chaincode.tgz) && echo $CHAINCODE_ID
 ```
 
-In another terminal, navigate to `fabric-samples/asset-transfer-basic/chaincode-typescript` and build the chaincode:
+Em outro terminal, navegue até `fabric-samples/asset-transfer-basic/chaincode-typescript` e crie o chaincode:
 
 ```shell
 npm install
 npm run build
 ```
 
-Set the chaincode package ID again (this is a different terminal):
+Defina o ID do pacote chaincode novamente (este é um terminal diferente):
 
 ```shell
 export CHAINCODE_ID=$(peer lifecycle chaincode calculatepackageid ../../test-network-nano-bash/chaincode-external/external-chaincode.tgz) && echo $CHAINCODE_ID
 ```
 
-Set the chaincode server address:
+Defina o endereço do servidor chaincode:
 
 ```shell
 export CHAINCODE_SERVER_ADDRESS=127.0.0.1:9999
 ```
 
-And start the chaincode service:
+E inicie o serviço chaincode:
 
 ```shell
 npm run start:server-nontls
 ```
 
-## Activate the chaincode
+## Ative o chaincode
 
-Using the peer1 admin, approve and commit the chaincode (only a single approver is required based on the lifecycle endorsement policy of any organization):
+Usando o administrador peer1, aprove e confirme o chaincode (apenas um único aprovador é necessário com base na política de endosso do ciclo de vida de qualquer organização):
 
 ```shell
 peer lifecycle chaincode approveformyorg -o 127.0.0.1:6050 --channelID mychannel --name basic --version 1 --package-id $CHAINCODE_ID --sequence 1 --tls --cafile ${PWD}/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/ca.crt
@@ -157,29 +157,28 @@ peer lifecycle chaincode approveformyorg -o 127.0.0.1:6050 --channelID mychannel
 peer lifecycle chaincode commit -o 127.0.0.1:6050 --channelID mychannel --name basic --version 1 --sequence 1 --tls --cafile "${PWD}"/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/ca.crt
 ```
 
-**Note:** after following the instructions above, the chaincode will only be installed on peer1 and will only be available in the peer1admin shell.
-Rerun the `peer lifecycle chaincode install` command in other peer admin shells to install it on the corresponding peer.
-You will also need to rerun the `peer lifecycle chaincode approveformyorg` command to use the chaincode on peers in another organisation, e.g. using the peer3admin shell.
+**Observação:** após seguir as instruções acima, o chaincode será instalado somente no peer1 e estará disponível somente no shell peer1admin.
+Reexecute o comando `peer lifecycle chaincode install` em outros shells de administração de peer para instalá-lo no peer correspondente.
+Você também precisará executar novamente o comando `peer lifecycle chaincode approveformyorg` para usar o chaincode em peers em outra organização, por exemplo, usando o shell peer3admin.
 
-## Interact with the chaincode
+## Interaja com o chaincode
 
-Invoke the chaincode to create an asset (only a single endorser is required based on the default endorsement policy of any organization).
-Then query the asset, update it, and query again to see the resulting asset changes on the ledger. Note that you need to wait a bit for invoke transactions to complete.
+Invoque o chaincode para criar um ativo (apenas um único endossante é necessário com base na política de endosso padrão de qualquer organização).
+Em seguida, consulte o ativo, atualize-o e consulte novamente para ver as alterações de ativos resultantes no livro-razão. Observe que você precisa esperar um pouco para que as transações de invocação sejam concluídas.
 
 ```shell
-peer chaincode invoke -o 127.0.0.1:6050 -C mychannel -n basic -c '{"Args":["CreateAsset","1","blue","35","tom","1000"]}' --tls --cafile "${PWD}"/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/ca.crt
+invocação de código de cadeia de pares -o 127.0.0.1:6050 -C meucanal -n básico -c '{"Args":["CriarAtivo","1","azul","35","tom","1000"]}' --tls --cafile "${PWD}"/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/ca.crt
 
-peer chaincode query -C mychannel -n basic -c '{"Args":["ReadAsset","1"]}'
+consulta de código de cadeia de pares -C meucanal -n básico -c '{"Args":["LerAtivo","1"]}'
 
-peer chaincode invoke -o 127.0.0.1:6050 -C mychannel -n basic -c '{"Args":["UpdateAsset","1","blue","35","jerry","1000"]}' --tls --cafile "${PWD}"/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/ca.crt
+invocação de código de cadeia de pares -o 127.0.0.1:6050 -C meucanal -n básico -c '{"Args":["AtualizarAtivo","1","azul","35","jerry","1000"]}' --tls --cafile "${PWD}"/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/ca.crt
 
 peer chaincode query -C mychannel -n basic -c '{"Args":["ReadAsset","1"]}'
 ```
 
-Congratulations, you have deployed a minimal Fabric network! Inspect the scripts if you would like to see the minimal set of commands that were required to deploy the network.
+Parabéns, você implantou uma rede Fabric mínima! Inspecione os scripts se quiser ver o conjunto mínimo de comandos necessários para implantar a rede.
 
-# Stopping the network
+# Parando a rede
 
-If you started the Fabric componentes individually, utilize `Ctrl-C` in the orderer and peer terminal windows to kill the orderer and peer processes. You can run the scripts again to restart the components with their existing data, or run `./generate_artifacts` again to clean up the existing artifacts and data if you would like to restart with a clean environment.
-
+Se você iniciou os componentes Fabric individualmente, utilize `Ctrl-C` nas janelas do terminal do orderer e do peer para encerrar os processos do orderer e do peer. Você pode executar os scripts novamente para reiniciar os componentes com seus dados existentes ou executar `./generate_artifacts` novamente para limpar os artefatos e dados existentes se quiser reiniciar com um ambiente limpo.
 If you used the `network.sh` script, utilize `Ctrl-C` to kill the orderer and peer processes. You can restart the network with the existing data, or run `./network.sh clean` to remove old data before restarting.
