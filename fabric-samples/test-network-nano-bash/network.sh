@@ -197,8 +197,10 @@
 
 
 
+
+
 #!/usr/bin/env sh
-# O primeiro linha indica ao sistema que este arquivo deve ser executado usando o interpretador de shell 'sh'.
+# A primeira linha indica ao sistema que este arquivo deve ser executado usando o interpretador de shell 'sh'.
 
 # SPDX-License-Identifier: Apache-2.0
 # Este é um aviso de licença que informa sob qual licença o código é distribuído.
@@ -233,7 +235,7 @@ networkStop() {
   echo "Stopping Fabric network..."  # Mensagem informando que a rede está sendo parada.
   
   # Interrompe todos os processos em segundo plano
-  trap " " 0 1 2 3 15 && kill -- -$$
+  trap " " 0 1 2 3 15 && kill -- -$$  # Usa 'trap' para garantir que todos os processos filhos sejam mortos ao parar a rede.
   wait  # Espera até que todos os processos filhos terminem.
   
   echo "Fabric network stopped."  # Mensagem informando que a rede foi parada.
@@ -242,10 +244,10 @@ networkStop() {
 # Função para iniciar a rede Fabric
 networkStart() {
   # Define o atraso padrão para 5 segundos
-  : "${CLI_DELAY:=5}"
+  : "${CLI_DELAY:=5}"  # Se a variável CLI_DELAY não estiver definida, ela será definida como 5.
 
   # Configura um trap para parar a rede ao final do script
-  trap networkStop 0 1 2 3 15
+  trap networkStop 0 1 2 3 15  # Isso assegura que a função networkStop será chamada quando o script for encerrado.
 
   # Verifica se os artefatos já existem, caso contrário, gera-os
   if [ -d "${PWD}"/channel-artifacts ] && [ -d "${PWD}"/crypto-config ]; then
@@ -260,87 +262,101 @@ networkStart() {
   # Cria um diretório para logs
   echo "Creating logs directory..."
   mkdir -p "${PWD}"/logs  # Cria o diretório 'logs', sem erro se já existir.
+  # 'mkdir' é o comando para criar diretórios.
+  # '-p' é uma opção que faz com que o comando não retorne erro se o diretório já existir.
+  # Se os diretórios pai necessários não existirem, '-p' também criará esses diretórios.
+  # '${PWD}' é uma variável de ambiente que contém o caminho do diretório atual em que o script está sendo executado.
+  # Assim, a linha completa cria um diretório chamado 'logs' no diretório atual.
+  # Se o diretório 'logs' já existir, o comando não faz nada e continua a execução do script sem erros.
 
   # Inicia os nós de ordenação em segundo plano, redirecionando logs
-  echo "Starting orderer..."
+  echo "Starting orderer..."  # Mensagem indicando que o nó de ordenação está sendo iniciado.
   ./orderer1.sh > ./logs/orderer1.log 2>&1 &  # Inicia o único nó de ordenação.
+  # './orderer1.sh' é o comando para executar o script que inicia o primeiro nó de ordenação da rede.
+  # '>' redireciona a saída padrão (stdout) do comando para um arquivo.
+  # './logs/orderer1.log' é o caminho do arquivo onde a saída do nó de ordenação será registrada.
+  # Isso significa que toda a saída (logs e mensagens) gerada pelo script 'orderer1.sh' será gravada em 'orderer1.log'.
+  # '2>&1' redireciona a saída de erro padrão (stderr) para o mesmo lugar que a saída padrão (stdout).
+  # Isso garante que tanto os logs normais quanto os erros sejam gravados no mesmo arquivo.
+  # '&' no final do comando faz com que o script seja executado em segundo plano.
+  # Isso permite que o terminal continue a aceitar outros comandos enquanto o nó de ordenação está em execução.
 
   # Aguarda um atraso antes de iniciar os peers
-  echo "Waiting ${CLI_DELAY}s..."
+  echo "Waiting ${CLI_DELAY}s..."  # Mensagem informando que o script vai aguardar.
   sleep ${CLI_DELAY}  # Pausa a execução pelo tempo definido em CLI_DELAY.
 
   # Inicia os nós de peer em segundo plano, redirecionando logs
-  echo "Starting peers..."
+  echo "Starting peers..."  # Mensagem indicando que os nós de peer estão sendo iniciados.
   ./peer1.sh > ./logs/peer1.log 2>&1 &  # Inicia o primeiro nó de peer.
   ./peer2.sh > ./logs/peer2.log 2>&1 &  # Inicia o segundo nó de peer.
 
   # Aguarda outro atraso
-  echo "Waiting ${CLI_DELAY}s..."
+  echo "Waiting ${CLI_DELAY}s..."  # Mensagem informando que o script vai aguardar.
   sleep ${CLI_DELAY}  # Pausa a execução novamente.
 
   # Se os artefatos foram criados, cria o canal e junta os peers
   if [ "${CREATE_CHANNEL}" = "true" ]; then
-    echo "Creating channel (peer1)..."
-    . ./peer1admin.sh && ./create_channel.sh  # Cria o canal
+    echo "Creating channel (peer1)..."  # Mensagem informando que o canal está sendo criado.
+    . ./peer1admin.sh && ./create_channel.sh  # Executa o script para criar o canal.
 
-    echo "Joining channel (peer2)..."
-    . ./peer2admin.sh && ./join_channel.sh  # Junta o peer2 ao canal
+    echo "Joining channel (peer2)..."  # Mensagem informando que o peer2 está se juntando ao canal.
+    . ./peer2admin.sh && ./join_channel.sh  # Executa o script para juntar o peer2 ao canal.
   fi
 
   echo "Fabric network running. Use Ctrl-C to stop."  # Mensagem informando que a rede está em execução.
   
   # Aguarda os processos em segundo plano
-  wait
+  wait  # Aguarda a finalização de todos os processos filhos.
 }
 
 # Função para limpar os diretórios da rede Fabric
 networkClean() {
   echo "Removing directories: channel-artifacts crypto-config data logs"  # Mensagem sobre remoção de diretórios.
   # Remove os diretórios especificados
-  rm -r "${PWD}"/channel-artifacts || true
-  rm -r "${PWD}"/crypto-config || true
-  rm -r "${PWD}"/data || true
-  rm -r "${PWD}"/logs || true
+  rm -r "${PWD}"/channel-artifacts || true  # Remove o diretório de artefatos, sem erro se não existir.
+  rm -r "${PWD}"/crypto-config || true  # Remove o diretório de configuração criptográfica, sem erro se não existir.
+  rm -r "${PWD}"/data || true  # Remove o diretório de dados, sem erro se não existir.
+  rm -r "${PWD}"/logs || true  # Remove o diretório de logs, sem erro se não existir.
 }
 
 # Analisando argumentos da linha de comando
 
 # Verifica se há modo especificado
 if [ $# -lt 1 ] ; then
-  printHelp  # Exibe ajuda se não houver modo
-  exit 0
+  printHelp  # Exibe ajuda se não houver modo.
+  exit 0  # Sai do script com código 0 (sucesso).
 else
-  MODE=$1  # Define o modo como o primeiro argumento
-  shift  # Remove o primeiro argumento da lista
+  MODE=$1  # Define o modo como o primeiro argumento.
+  shift  # Remove o primeiro argumento da lista.
 fi
 
 # Analisa as flags
 while [ $# -ge 1 ] ; do
-  key="$1"  # Armazena a primeira flag em 'key'
+  key="$1"  # Armazena a primeira flag em 'key'.
   case $key in
   -d )
-    CLI_DELAY="$2"  # Define o atraso se a flag -d for usada
-    shift  # Remove a flag e o valor dela da lista
+    CLI_DELAY="$2"  # Define o atraso se a flag -d for usada.
+    shift  # Remove a flag e o valor dela da lista.
     ;;
   -h )
-    printHelp "$MODE"  # Exibe ajuda para o modo atual
-    exit 0
+    printHelp "$MODE"  # Exibe ajuda para o modo atual.
+    exit 0  # Sai do script com código 0 (sucesso).
     ;;
   * )
-    echo "Unknown flag: $key"  # Trata flags desconhecidas
-    printHelp  # Exibe a ajuda
-    exit 1
+    echo "Unknown flag: $key"  # Trata flags desconhecidas.
+    printHelp  # Exibe a ajuda.
+    exit 1  # Sai do script com código 1 (erro).
     ;;
   esac
-  shift  # Remove a flag da lista
+  shift  # Remove a flag da lista.
 done
 
-# Inicia a rede ou a limpa, dependendo do modo
+# Inicia a rede ou a limpa, dependendo do modo.
 if [ "$MODE" = "start" ]; then
-  networkStart  # Chama a função para iniciar a rede
+  networkStart  # Chama a função para iniciar a rede.
 elif [ "$MODE" = "clean" ]; then
-  networkClean  # Chama a função para limpar os dados da rede
+  networkClean  # Chama a função para limpar os dados da rede.
 else
-  printHelp  # Exibe ajuda se o modo não for reconhecido
-  exit 1
+  printHelp  # Exibe ajuda se o modo não for reconhecido.
+  exit 1  # Sai do script com código 1 (erro).
 fi
