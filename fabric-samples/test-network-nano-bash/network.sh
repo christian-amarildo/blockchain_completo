@@ -1,4 +1,4 @@
-# #!/usr/bin/env sh
+#  #!#/usr/bin/env sh
 # # O primeiro linha indica ao sistema que este arquivo deve ser executado usando o interpretador de shell 'sh'.
 
 # # SPDX-License-Identifier: Apache-2.0
