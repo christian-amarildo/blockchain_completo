@@ -1,0 +1,48 @@
+version: 1.1.0
+
+ca:
+  name: ca-delegacia
+  keyfile: msp/keystore/key.pem
+  certfile: msp/signcerts/cert.pem
+
+affiliations:
+  delegacia: []
+
+identities:
+  admin:
+    password: adminpw
+    type: client
+    affiliation: delegacia
+    attrs:
+      hf.Registrar.Roles: "client,peer,orderer,admin"
+
+db:
+  type: sqlite3
+  datasource: fabric-ca-server.db
+
+csr:
+  cn: fabric-ca-server
+  hosts:
+    - localhost
+  ca:
+    expiry: 131400h  # 15 anos
+
+crl:
+  expiry: 24h
+
+registry:
+  identities:
+    - name: admin
+      pass: adminpw
+      type: client
+      affiliation: delegacia
+      maxenrollments: -1
+
+bccsp:
+  default: SW
+  sw:
+    hash: SHA2
+    security: 256
+
+tls:
+  enabled: false

@@ -1,0 +1,292 @@
+# Copyright IBM Corp. Todos os direitos reservados.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+---
+################################################################################
+#
+#   Seção: Organizações
+#
+#   - Esta seção define as diferentes identidades organizacionais que serão
+#   referenciadas posteriormente na configuração.
+#
+################################################################################
+Organizations:
+
+    # SampleOrg define um MSP usando a configuração de exemplo. 
+    # Não deve ser usado em produção, mas pode servir como um modelo para outras definições.
+    - &OrdererOrg
+        # DefaultOrg define a organização usada na configuração de exemplo
+        # do ambiente de desenvolvimento do fabric.git
+        Name: OrdererOrg
+
+        # ID para carregar a definição do MSP
+        ID: OrdererMSP
+
+        # MSPDir é o caminho no sistema de arquivos que contém a configuração do MSP
+        MSPDir: ../organizations/ordererOrganizations/example.com/msp
+
+        # Políticas define o conjunto de políticas neste nível da árvore de configuração
+        # Para políticas de organização, o caminho canônico geralmente é
+        #   /Channel/<Application|Orderer>/<OrgName>/<PolicyName>
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('OrdererMSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('OrdererMSP.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('OrdererMSP.admin')"
+
+        # Endpoints dos ordenadores
+        OrdererEndpoints:
+            - orderer.example.com:7050
+
+    - &Org1
+        # DefaultOrg define a organização usada na configuração de exemplo
+        # do ambiente de desenvolvimento do fabric.git
+        Name: Org1MSP
+
+        # ID para carregar a definição do MSP
+        ID: Org1MSP
+
+        # Caminho do diretório do MSP para a organização 1
+        MSPDir: ../organizations/peerOrganizations/org1.example.com/msp
+
+        # Políticas definidas para a organização 1
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('Org1MSP.admin', 'Org1MSP.peer', 'Org1MSP.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('Org1MSP.admin', 'Org1MSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('Org1MSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('Org1MSP.peer')"
+
+    - &Org2
+        # DefaultOrg define a organização usada na configuração de exemplo
+        # do ambiente de desenvolvimento do fabric.git
+        Name: Org2MSP
+
+        # ID para carregar a definição do MSP
+        ID: Org2MSP
+
+        # Caminho do diretório do MSP para a organização 2
+        MSPDir: ../organizations/peerOrganizations/org2.example.com/msp
+
+        # Políticas definidas para a organização 2
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('Org2MSP.admin', 'Org2MSP.peer', 'Org2MSP.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('Org2MSP.admin', 'Org2MSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('Org2MSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('Org2MSP.peer')"
+
+################################################################################
+#
+#   SEÇÃO: Capacidades
+#
+#   - Esta seção define as capacidades da rede do Fabric. Este é um novo
+#   conceito a partir da versão v1.1.0 e não deve ser utilizado em redes mistas
+#   com peers e ordenadores da versão v1.0.x. As capacidades definem recursos que
+#   devem estar presentes em um binário do Fabric para que ele participe com segurança
+#   na rede do Fabric. Definir uma capacidade para um canal informa aos binários
+#   sem essa capacidade que eles devem interromper o processamento de transações
+#   até que sejam atualizados. Para a v1.0.x, se qualquer capacidade for definida
+#   (incluindo um mapa com todas as capacidades desativadas), o peer v1.0.x 
+#   irá deliberadamente falhar.
+#
+################################################################################
+Capabilities:
+    # As capacidades do canal se aplicam tanto aos ordenadores quanto aos peers,
+    # e devem ser suportadas por ambos. Defina o valor da capacidade como true
+    # para exigir que ela seja aplicada.
+    Channel: &ChannelCapabilities
+        # A capacidade V2_0 garante que os ordenadores e peers se comportem de acordo
+        # com as capacidades do canal v2.0. Ordenadores e peers de versões anteriores
+        # se comportariam de maneira incompatível, e portanto não podem participar 
+        # de canais com capacidade v2.0. Antes de habilitar as capacidades do canal V2.0,
+        # certifique-se de que todos os ordenadores e peers em um canal estejam na 
+        # versão v2.0.0 ou posterior.
+        V2_0: true
+
+    # As capacidades do ordenador se aplicam apenas aos ordenadores e podem ser
+    # usadas com segurança com peers de versões anteriores.
+    Orderer: &OrdererCapabilities
+        # A capacidade V2_0 do ordenador garante que os ordenadores se comportem de
+        # acordo com as capacidades do ordenamento v2.0. Ordenadores de versões anteriores
+        # se comportariam de maneira incompatível e, portanto, não podem participar
+        # de canais com capacidade de ordenamento v2.0.
+        V2_0: true
+
+    # As capacidades da aplicação se aplicam apenas à rede de peers e podem ser usadas
+    # com segurança com ordenadores de versões anteriores.
+    Application: &ApplicationCapabilities
+        # A capacidade V2_0 da aplicação garante que os peers se comportem de acordo
+        # com as capacidades de aplicação v2.0. Peers de versões anteriores se comportariam
+        # de maneira incompatível e, portanto, não podem participar de canais com 
+        # capacidade de aplicação v2.0.
+        V2_0: true
+
+################################################################################
+#
+#   SEÇÃO: Aplicação
+#
+#   - Esta seção define os valores a serem codificados em uma transação de configuração 
+#   ou bloco de gênese para parâmetros relacionados à aplicação.
+#
+################################################################################
+Application: &ApplicationDefaults
+
+    # Organizations é a lista de organizações definidas como participantes 
+    # no lado da aplicação da rede.
+    Organizations:
+
+    # Políticas definem o conjunto de políticas neste nível da árvore de configuração
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+        LifecycleEndorsement:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Endorsement"
+        Endorsement:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Endorsement"
+
+    # Capabilities define as capacidades para a aplicação
+    Capabilities:
+        <<: *ApplicationCapabilities
+
+################################################################################
+#
+#   SEÇÃO: Ordenador
+#
+#   - Esta seção define os valores a serem codificados em uma transação de configuração 
+#   ou bloco de gênese para parâmetros relacionados ao ordenamento.
+#
+################################################################################
+Orderer: &OrdererDefaults
+
+    # Tipo de Ordenador: A implementação do ordenador a ser iniciada
+    OrdererType: etcdraft
+
+    # Endereços usados para a lista de endereços de ordenadores para os quais
+    # clientes e peers podem se conectar.
+    Addresses:
+        - orderer.example.com:7050
+
+    # Configurações do EtcdRaft para consenso
+    EtcdRaft:
+        Consenters:
+        - Host: orderer.example.com
+          Port: 7050
+          ClientTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
+          ServerTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
+
+    # Tempo de lote: Tempo de espera antes de criar um lote
+    BatchTimeout: 2s
+
+    # Tamanho do lote: Controla o número de mensagens em um bloco
+    BatchSize:
+
+        # Contagem máxima de mensagens em um lote
+        MaxMessageCount: 10
+
+        # Bytes máximos absolutos permitidos em um lote
+        AbsoluteMaxBytes: 99 MB
+
+        # Bytes máximos preferidos em um lote
+        PreferredMaxBytes: 512 KB
+
+    # Organizations é a lista de organizações participantes no lado do ordenamento da rede
+    Organizations:
+
+    # Políticas definem o conjunto de políticas neste nível da árvore de configuração
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+        # BlockValidation especifica as assinaturas que devem estar incluídas no bloco
+        BlockValidation:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+
+################################################################################
+#
+#   CANAL
+#
+#   Esta seção define os valores a serem codificados em uma transação de configuração 
+#   ou bloco de gênese para parâmetros relacionados ao canal.
+#
+################################################################################
+Channel: &ChannelDefaults
+    # Políticas definem o conjunto de políticas neste nível da árvore de configuração
+    Policies:
+        # Quem pode invocar a API 'Deliver'
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        # Quem pode invocar a API 'Broadcast'
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        # Quem pode modificar elementos neste nível de configuração por padrão
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+
+    # Capabilities descrevem as capacidades em nível de canal
+    Capabilities:
+        <<: *ChannelCapabilities
+
+################################################################################
+#
+#   Perfil
+#
+#   - Diferentes perfis de configuração podem ser codificados aqui para serem 
+#   especificados como parâmetros para a ferramenta configtxgen.
+#
+################################################################################
+Profiles:
+
+    TwoOrgsApplicationGenesis:
+        <<: *ChannelDefaults
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *OrdererOrg
+            Capabilities: *OrdererCapabilities
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Org1
+                - *Org2
+            Capabilities: *ApplicationCapabilities
